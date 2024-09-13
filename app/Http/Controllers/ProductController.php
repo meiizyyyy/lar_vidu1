@@ -13,6 +13,9 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    // Constructor để kiểm tra quyền admin
+
     public function index()
     {
         $products = Product::with('category')->get(); // Lấy danh sách sản phẩm kèm theo tên danh mục
@@ -25,7 +28,7 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::all(); // Lấy tất cả danh mục để người dùng có thể chọn
-        return view('products.create', compact('categories'));
+        return view('admin.products.create', compact('categories'));
     }
 
     /**
@@ -49,7 +52,7 @@ class ProductController extends Controller
 
         Product::create($validatedData);
 
-        return redirect()->route('products.index')->with('success', 'Product created successfully.');
+        return redirect()->route('admin.products.index')->with('success', 'Product created successfully.');
     }
 
     /**
@@ -68,7 +71,7 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id); // Lấy sản phẩm để chỉnh sửa
         $categories = Category::all(); // Lấy danh sách các danh mục để chọn
-        return view('products.edit', compact('product', 'categories'));
+        return view('admin.products.edit', compact('product', 'categories'));
     }
 
     /**
@@ -84,11 +87,10 @@ class ProductController extends Controller
             'price' => 'required|numeric',
             'stock' => 'required|integer',
             'category_id' => 'required|exists:categories,category_id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Xác thực hình ảnh
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         if ($request->hasFile('image')) {
-            // Xóa hình ảnh cũ nếu có
             if ($product->image_url) {
                 Storage::delete('public/' . $product->image_url);
             }
@@ -98,7 +100,7 @@ class ProductController extends Controller
 
         $product->update($validatedData);
 
-        return redirect()->route('products.index')->with('success', 'Product updated successfully.');
+        return redirect()->route('admin.products.index')->with('success', 'Product updated successfully.');
     }
 
     /**
@@ -107,13 +109,12 @@ class ProductController extends Controller
     public function destroy(string $id)
     {
         $product = Product::findOrFail($id);
-        // Xóa hình ảnh nếu có
         if ($product->image_url) {
             Storage::delete('public/' . $product->image_url);
         }
 
         $product->delete();
 
-        return redirect()->route('products.index')->with('success', 'Product deleted successfully.');
+        return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully.');
     }
 }
