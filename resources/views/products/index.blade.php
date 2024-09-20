@@ -3,8 +3,6 @@
 @section('content')
     <div class="container">
         <h1 class="mb-4">Product List</h1>
-        {{-- <a href="{{ route('products.create') }}" class="btn btn-primary mb-3">Add New Products</a> --}}
-
         <div class="table-responsive"> <!-- Đảm bảo bảng có thể cuộn ngang khi cần -->
             <table class="table table-bordered ">
                 <thead class="thead-dark">
@@ -41,18 +39,10 @@
                                 @endif
                             </td>
                             <td>
-                                {{-- <a href="{{ route('products.edit', $product->product_id) }}"
-                                    class="btn btn-warning btn-sm">Edit</a> --}}
-                                {{-- <form action="{{ route('products.destroy', $product->product_id) }}" method="POST"
-                                    style="display:inline-block" onsubmit="return confirm('Remove this Product?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                </form> --}}
                                 <br>
                                 <a href="{{ route('products.show', $product->product_id) }}"
                                     class="btn btn-secondary btn-sm mt-3">
-                                    View Product Details
+                                    Xem chi tiết sản phẩm
                                 </a>
                             </td>
                         </tr>

@@ -56,24 +56,25 @@ class AuthController extends Controller
     {
         // Validate thông tin đăng nhập
         $credentials = $request->validate([
-            'login' => 'required',  // login có thể là username hoặc email
+            'username' => 'required',  // Sử dụng username hoặc email
             'password' => 'required',
         ]);
 
-        // Kiểm tra nếu login là email hay username
-        $login_type = filter_var($request->login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+        // Kiểm tra nếu username là email hay username
+        $login_type = filter_var($request->username, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
 
         // Thử đăng nhập với username hoặc email
-        if (auth()->attempt([$login_type => $request->login, 'password' => $request->password])) {
+        if (auth()->attempt([$login_type => $request->username, 'password' => $request->password])) {
             // Đăng nhập thành công
             return redirect()->intended('/home');
         }
 
         // Đăng nhập thất bại
         return back()->withErrors([
-            'login' => 'Thông tin đăng nhập không chính xác.',
-        ])->onlyInput('login');
+            'username' => 'Thông tin đăng nhập không chính xác.',
+        ])->onlyInput('username');
     }
+
 
     public function logout()
     {

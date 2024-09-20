@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CartController;
 use App\Models\Product;
 
 /*
@@ -49,6 +50,13 @@ Route::get('products', [ProductController::class, 'index'])->name('products.inde
 Route::get('products/{id}', [ProductController::class, 'show'])->name('products.show');
 Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');
 Route::get('categories/{id}', [CategoryController::class, 'show'])->name('categories.show');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index'); // Hiển thị giỏ hàng
+    Route::post('/cart/add/{productId}', [CartController::class, 'add'])->name('cart.add'); // Thêm sản phẩm vào giỏ hàng
+    Route::post('/cart/update/{itemId}', [CartController::class, 'update'])->name('cart.update'); // Cập nhật số lượng sản phẩm
+    Route::delete('/cart/remove/{itemId}', [CartController::class, 'remove'])->name('cart.remove'); // Xóa sản phẩm khỏi giỏ hàng
+});
 
 // Route cho trang chính
 Route::get('/home', [HomeController::class, 'index'])->name('home');

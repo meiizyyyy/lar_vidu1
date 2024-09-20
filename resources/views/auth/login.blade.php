@@ -36,8 +36,8 @@
                             @csrf
 
                             <div class="form-group mb-3">
-                                <label for="login">Username or Email</label>
-                                <input type="text" name="login" class="form-control" value="{{ old('login') }}"
+                                <label for="username">Username or Email</label>
+                                <input type="text" name="username" class="form-control" value="{{ old('username') }}"
                                     required>
                             </div>
 
