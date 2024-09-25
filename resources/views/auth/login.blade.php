@@ -2,12 +2,12 @@
 
 @section('content')
     <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Đăng nhập</div>
+        <div class="row">
+            <div class="col-md-4 mx-auto">
+                <div class="card border-0">
+                    <div class="card-body p-4">
+                        <h4 class="mb-4">Đăng Nhập</h4>
 
-                    <div class="card-body">
                         <!-- Hiển thị thông báo từ session -->
                         @if (session('status'))
                             <div class="alert alert-success">
@@ -36,25 +36,24 @@
                             @csrf
 
                             <div class="form-group mb-3">
-                                <label for="username">Username or Email</label>
-                                <input type="text" name="username" class="form-control" value="{{ old('username') }}"
-                                    required>
+                                <label for="username">Username hoặc Email</label>
+                                <input type="text" name="username" class="form-control" value="{{ old('username') }}" required>
                             </div>
 
                             <div class="form-group mb-3">
-                                <label for="password">Password</label>
+                                <label for="password">Mật khẩu</label>
                                 <input type="password" name="password" class="form-control" required>
                             </div>
 
-                            <div class="form-group mb-3">
-                                <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
+                            <div class="form-group mb-4">
+                                <button type="submit" class="btn btn-primary w-100">Đăng Nhập</button>
                             </div>
-                            <div class="form-group mb-3">
-                                <a href="register">Đăng ký</a>
+
+                            <div class="text-left">
+                                <a href="{{ route('register') }}" class="text-decoration-none">Đăng Ký</a>
                             </div>
-                            <!-- Thêm link nếu quên mật khẩu (nếu cần) -->
-                            <div class="form-group text-center">
-                                {{-- <a href="{{ route('password.request') }}">Quên mật khẩu?</a> --}}
+                            <div class="text-left mt-3">
+                                {{-- <a href="{{ route('password.request') }}" class="text-decoration-none">Quên mật khẩu?</a> --}}
                             </div>
                         </form>
                     </div>

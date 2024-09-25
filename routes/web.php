@@ -24,7 +24,7 @@ Route::get('/', function () {
     // return view('welcome');
     return view('home.home');
 });
-
+Route::get('/', [ProductController::class, 'index']);
 // Admin routes
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     // Category Routes

@@ -13,7 +13,6 @@ class CartController extends Controller
     {
         // Lấy giỏ hàng của người dùng hiện tại
         $cart = Cart::with('items.product')->where('user_id', auth()->id())->first();
-
         return view('cart.index', compact('cart'));
     }
 

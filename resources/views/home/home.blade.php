@@ -12,10 +12,15 @@
                             alt="{{ $product->name }}" style="height: 400px; object-fit: cover;">
                         <div class="card-body">
                             <h5 class="card-title text-center">{{ $product->name }}</h5>
-                            <p class="font-weight-bold" style="font-size: 1.5rem;">{{ number_format($product->price, 0) }}đ
-                            </p>
-                            <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex justify-content-between align-items-center mt-4">
+
                                 <span class="text-muted">Còn lại: {{ $product->stock }}</span>
+                                <span class="text-muted">{{ $product->category->name }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                <p class="font-weight-bold" style="font-size: 1.5rem;">
+                                    {{ number_format($product->price, 0) }}đ
+                                </p>
                                 <a href="{{ route('products.show', $product->product_id) }}"
                                     class="btn btn-outline-secondary">Xem chi tiết</a>
                                 <form action="{{ route('cart.add', $product->product_id) }}" method="POST" class="ml-2">

@@ -65,3 +65,10 @@
     background-color: #0056b3;
 }
 
+.card {
+    transition: transform 0.2s; /* Hiệu ứng khi hover */
+}
+
+.card:hover {
+    transform: scale(1.05); /* Phóng to một chút khi hover */
+}

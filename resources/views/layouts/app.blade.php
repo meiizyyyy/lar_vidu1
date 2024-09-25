@@ -7,7 +7,7 @@
     <title>Laravel CRUD</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
+    <link rel="stylesheet" href="{{ asset('css/custom.css') }}"> <!-- Liên kết đến file CSS tùy chỉnh -->
 
 </head>
 
@@ -53,25 +53,22 @@
                         @endif
                         @guest
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">Login</a>
+                                <a class="nav-link d-flex align-items-center" href="{{ route('cart.index') }}">
+                                    <i class="fas fa-shopping-cart me-2"></i> Giỏ Hàng
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('cart.index') }}">
-                                    <i class="fas fa-shopping-cart"></i> Giỏ Hàng
-                                </a>
+                                <a class="nav-link" href="{{ route('login') }}">Login</a>
                             </li>
                         @endguest
 
                         @auth
                             <li class="nav-item d-flex align-items-center">
-                                <span class="navbar-text me-3">
-                                    Hello, {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
-                                </span>
-                                <span class="navbar-text me-3">
-                                    <a href="{{ route('cart.index') }}">
-                                        <i class="fas fa-shopping-cart"></i> Giỏ Hàng
-                                    </a>
-                                </span>
+                                @if (auth()->check() && auth()->user()->role == 'admin')
+                                    <span class="navbar-text me-3">
+                                        Hello, {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
+                                    </span>
+                                @endif
                             </li>
                             <li class="nav-item">
                                 <form action="{{ route('logout') }}" method="POST" class="d-inline">
