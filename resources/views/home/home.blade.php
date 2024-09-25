@@ -7,25 +7,21 @@
         <div class="row">
             @foreach ($products as $product)
                 <div class="col-md-4 col-lg-3 mb-4">
-                    <div class="card border-light h-100" style="border-radius: 0;">
-                        <img src="{{ asset('storage/' . $product->image_url) }}" class="card-img-top"
-                            alt="{{ $product->name }}" style="height: 400px; object-fit: cover;">
-                        <div class="card-body">
-                            <h5 class="card-title text-center">{{ $product->name }}</h5>
-                            <div class="d-flex justify-content-between align-items-center mt-4">
-
-                                <span class="text-muted">Còn lại: {{ $product->stock }}</span>
-                                <span class="text-muted">{{ $product->category->name }}</span>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center mt-2">
-                                <p class="font-weight-bold" style="font-size: 1.5rem;">
-                                    {{ number_format($product->price, 0) }}đ
-                                </p>
-                                <a href="{{ route('products.show', $product->product_id) }}"
-                                    class="btn btn-outline-secondary">Xem chi tiết</a>
-                                <form action="{{ route('cart.add', $product->product_id) }}" method="POST" class="ml-2">
+                    <div class="product-card">
+                        <img src="{{ asset('storage/' . $product->image_url) }}" class="product-card-img"
+                            alt="{{ $product->name }}">
+                        <div class="product-card-body">
+                            <h5 class="product-card-title">{{ $product->name }}</h5>
+                            <p class="product-card-stock">Còn lại: {{ $product->stock }}</p>
+                            <p class="product-card-description">{{ $product->category->name }}</p>
+                            <p class="product-card-price">
+                                {{ number_format($product->price, 0) }}đ
+                            </p>
+                            <div class="btn-group" role="group">
+                                <a href="{{ route('products.show', $product->product_id) }}" class="btn btn-link">Xem chi tiết</a>
+                                <form action="{{ route('cart.add', $product->product_id) }}" method="POST">
                                     @csrf
-                                    <button type="submit" class="">
+                                    <button type="submit" class="btn btn-link">
                                         <i class="fas fa-shopping-cart"></i>
                                     </button>
                                 </form>
