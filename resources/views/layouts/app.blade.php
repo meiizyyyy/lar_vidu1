@@ -58,17 +58,32 @@
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{{ route('orders.index') }}">
+                                    Đơn Hàng Của Bạn
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}">Login</a>
                             </li>
                         @endguest
 
                         @auth
                             <li class="nav-item d-flex align-items-center">
-                                @if (auth()->check() && auth()->user()->role == 'admin')
+                                @if (auth()->check())
                                     <span class="navbar-text me-3">
                                         Hello, {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
                                     </span>
                                 @endif
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{{ route('cart.index') }}">
+                                    <i class="fas fa-shopping-cart me-2"></i> Giỏ Hàng
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center" href="{{ route('orders.index') }}">
+                                    Đơn Hàng Của Bạn
+                                </a>
                             </li>
                             <li class="nav-item">
                                 <form action="{{ route('logout') }}" method="POST" class="d-inline">

@@ -33,12 +33,14 @@
                         <p class="lead">{{ $product->description }}</p>
                     </div>
 
-                    <form action="{{ route('cart.add', $product->product_id) }}" method="POST" class="mt-4">
+                    <form id="add-to-cart-form" data-product-id="{{ $product->product_id }}" class="mt-4">
                         @csrf
-                        <button type="submit" class="btn btn-primary">
+                        <button type="button" class="btn btn-primary add-to-cart">
                             <i class="fas fa-shopping-cart"></i> Thêm vào Giỏ Hàng
                         </button>
                     </form>
+                    <div id="message" style="display: none;"></div>
+
                 </div>
             </div>
         </div>
@@ -57,7 +59,8 @@
             padding-top: 10px;
         }
 
-        h2, h5 {
+        h2,
+        h5 {
             color: #333;
         }
 
@@ -71,4 +74,36 @@
             border: none;
         }
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.add-to-cart').on('click', function() {
+                var productId = $('#add-to-cart-form').data('product-id');
+                var token = $('input[name="_token"]').val();
+
+                // Kiểm tra xem người dùng đã đăng nhập
+                var isAuthenticated = {{ auth()->check() ? 'true' : 'false' }};
+
+                if (!isAuthenticated) {
+                    window.location.href = '/login'; // Chuyển hướng đến trang đăng nhập
+                    return;
+                }
+
+                $.ajax({
+                    url: '/cart/add/' + productId,
+                    type: 'POST',
+                    data: {
+                        _token: token,
+                    },
+                    success: function(response) {
+                        $('#message').text('Đã thêm ' + response.product_name +
+                            ' vào giỏ hàng thành công!').show();
+                    },
+                    error: function() {
+                        $('#message').text('Có lỗi xảy ra. Vui lòng thử lại!').show();
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

@@ -8,6 +8,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
 use App\Models\Product;
+use App\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,12 +52,19 @@ Route::get('products/{id}', [ProductController::class, 'show'])->name('products.
 Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');
 Route::get('categories/{id}', [CategoryController::class, 'show'])->name('categories.show');
 
+// Cart routes (Chỉ khi người dùng đã đăng nhập)
 Route::middleware('auth')->group(function () {
+    // Giỏ hàng
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index'); // Hiển thị giỏ hàng
     Route::post('/cart/add/{productId}', [CartController::class, 'add'])->name('cart.add'); // Thêm sản phẩm vào giỏ hàng
     Route::post('/cart/update/{itemId}', [CartController::class, 'update'])->name('cart.update'); // Cập nhật số lượng sản phẩm
     Route::delete('/cart/remove/{itemId}', [CartController::class, 'remove'])->name('cart.remove'); // Xóa sản phẩm khỏi giỏ hàng
+
+    // Đặt hàng (order)
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index'); // Xem danh sách đơn hàng
+    Route::post('/orders', [OrderController::class, 'store'])->name('orders.store'); // Đặt hàng
 });
+Route::resource('orders', OrderController::class);
 
 // Route cho trang chính
 Route::get('/home', [HomeController::class, 'index'])->name('home');

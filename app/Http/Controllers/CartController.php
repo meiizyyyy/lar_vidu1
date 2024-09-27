@@ -38,8 +38,12 @@ class CartController extends Controller
             ]);
         }
 
-        return redirect()->route('cart.index')->with('success', 'Sản phẩm đã được thêm vào giỏ hàng!');
+        // Tìm sản phẩm để trả về tên
+        $product = $cart->items()->with('product')->where('product_id', $productId)->first();
+
+        return response()->json(['product_name' => $product->product->name]);
     }
+
 
 
 
