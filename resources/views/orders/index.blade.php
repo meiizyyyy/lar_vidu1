@@ -29,6 +29,9 @@
                                 <button type="submit" class="btn btn-danger">Xóa đơn hàng</button>
                             </form>
                         @endif
+                        <p>
+                            <a href="{{ route('orders.show', $order->id) }}" class="btn btn-primary">Xem chi tiết</a>
+                        </p>
                     </div>
                 </div>
             @endforeach

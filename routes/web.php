@@ -9,6 +9,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
 use App\Models\Product;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +30,11 @@ Route::get('/', function () {
 Route::get('/', [ProductController::class, 'index']);
 // Admin routes
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+
+    Route::get('/dashboard', function () {
+        return view('admin.admindashboard');
+    })->name('dashboard');
+
     // Category Routes
     Route::get('categories', [AdminController::class, 'indexCategories'])->name('categories.index');
     Route::get('categories/create', [AdminController::class, 'createCategory'])->name('categories.create');
@@ -43,6 +50,21 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('products/{id}/edit', [AdminController::class, 'editProduct'])->name('products.edit');
     Route::put('products/{id}', [AdminController::class, 'updateProduct'])->name('products.update');
     Route::delete('products/{id}', [AdminController::class, 'destroyProduct'])->name('products.destroy');
+
+    //Order Routes
+
+    Route::get('orders', [OrderController::class, 'adminIndex'])->name('orders.index'); // Xem danh sách đơn hàng
+    Route::get('orders/{id}/edit', [OrderController::class, 'edit'])->name('orders.edit'); // Sửa đơn hàng
+    Route::put('orders/{id}', [OrderController::class, 'update'])->name('orders.update'); // Cập nhật đơn hàng
+    Route::delete('orders/{id}', [OrderController::class, 'destroy'])->name('orders.destroy'); // Xóa đơn hàng
+    Route::get('orders', [AdminOrderController::class, 'index'])->name('orders.index'); // Hiển thị danh sách đơn hàng
+    Route::get('orders/{id}', [AdminOrderController::class, 'show'])->name('orders.show'); // Hiển thị chi tiết đơn hàng cho admin
+    Route::get('admin/orders/{id}', [AdminOrderController::class, 'show'])->name('admin.orders.show');
+    Route::put('orders/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.updateStatus'); // Cập nhật trạng thái đơn hàng
+
+
+    //Report
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 });
 
 
@@ -62,6 +84,8 @@ Route::middleware('auth')->group(function () {
 
     // Đặt hàng (order)
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index'); // Xem danh sách đơn hàng
+    Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show'); // Xem chi tiết đơn hàng của khách hàng
+
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.store'); // Đặt hàng
 });
 Route::resource('orders', OrderController::class);

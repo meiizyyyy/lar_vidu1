@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Category; // Sử dụng model Category
 use App\Models\Product;  // Sử dụng model Product
+use App\Models\Order;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 
@@ -34,7 +35,11 @@ class AdminController extends Controller
         $products = Product::all();
         return view('admin.products.index', compact('products'));
     }
-
+    public function indexOrders()
+    {
+        $orders = Order::all(); // Lấy tất cả đơn hàng
+        return view('admin.orders.index', compact('orders')); // Trả về view với danh sách đơn hàng
+    }
 
     public function createCategory()
     {

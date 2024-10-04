@@ -50,3 +50,15 @@
 .btn-link:hover {
     color: #0056b3; /* Darker shade on hover */
 }
+.report-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%; /* Chiều cao bằng 100% */
+    transition: transform 0.3s; /* Hiệu ứng chuyển động */
+}
+
+.report-box:hover {
+    transform: translateY(-5px); /* Hiệu ứng nhấc lên khi hover */
+}

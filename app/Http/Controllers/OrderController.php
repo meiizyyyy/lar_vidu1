@@ -16,6 +16,7 @@ class OrderController extends Controller
         return view('orders.index', compact('orders'));
     }
 
+
     // Xử lý đặt hàng
     public function store(Request $request)
     {
@@ -95,7 +96,7 @@ class OrderController extends Controller
     {
         $order = Order::findOrFail($id);
 
-        // Optional: Check if the order can be deleted (e.g., only if it's in 'processing' status)
+        // Kiểm tra nếu đơn hàng có thể bị xóa (nếu cần)
         if ($order->status == 'processing') {
             $order->delete();
             return redirect()->route('orders.index')->with('success', 'Đơn hàng đã được xóa!');
@@ -103,4 +104,23 @@ class OrderController extends Controller
             return redirect()->route('orders.index')->with('error', 'Không thể xóa đơn hàng này.');
         }
     }
+
+    public function show($id)
+    {
+        // Lấy đơn hàng của người dùng đã đăng nhập
+        $order = Order::where('id', $id)
+            ->where('user_id', auth()->id())
+            ->with('orderItems.product') // Lấy các sản phẩm trong đơn hàng
+            ->firstOrFail();
+
+        return view('orders.show', compact('order'));
+    }
+
+    //Admin
+    // public function adminIndex()
+    // {
+    //     // Chỉ lấy đơn hàng của tất cả người dùng
+    //     $orders = Order::all();
+    //     return view('admin.orders.index', compact('orders'));
+    // }
 }

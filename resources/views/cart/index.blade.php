@@ -55,10 +55,10 @@
                         <h2 class="cart-title text-danger">Giỏ hàng của bạn trống. Vui lòng thêm sản phẩm.</h2>
                     @endif
                 </div>
-                <a href="javascript: window.history.back();" class="btn btn--large btn--outline btn-cart-continue mb-3">
+                {{-- <a href="javascript: window.history.back();" class="btn btn--large btn--outline btn-cart-continue mb-3">
                     <span class="icon-ic_left-arrow"></span>
                     Tiếp tục mua hàng
-                </a>
+                </a> --}}
             </div>
 
             <div class="col-lg-4 cart-summary">

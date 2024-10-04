@@ -7,6 +7,8 @@
     <title>Laravel CRUD</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}"> <!-- Liên kết đến file CSS tùy chỉnh -->
 
 </head>
@@ -32,7 +34,6 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('products.index') }}">Product List</a>
                         </li>
-
                     </ul>
 
                     <ul class="navbar-nav ms-auto">
@@ -44,24 +45,32 @@
                                     Admin Menu
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('admin.dashboard') }}">Admin Dashboard</a>
+                                    </li>
                                     <li><a class="dropdown-item" href="{{ route('admin.categories.index') }}">Admin
                                             Category List</a></li>
                                     <li><a class="dropdown-item" href="{{ route('admin.products.index') }}">Admin
                                             Product List</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('admin.orders.index') }}">Admin Order
+                                            Management</a></li>
                                 </ul>
                             </li>
                         @endif
+
                         @guest
-                            <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="{{ route('cart.index') }}">
-                                    <i class="fas fa-shopping-cart me-2"></i> Giỏ Hàng
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="{{ route('orders.index') }}">
-                                    Đơn Hàng Của Bạn
-                                </a>
-                            </li>
+                            @if (!auth()->check() || (auth()->check() && auth()->user()->role != 'admin'))
+                                <li class="nav-item">
+                                    <a class="nav-link d-flex align-items-center" href="{{ route('cart.index') }}">
+                                        <i class="fas fa-shopping-cart me-2"></i> Giỏ Hàng
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link d-flex align-items-center" href="{{ route('orders.index') }}">
+                                        Đơn Hàng Của Bạn
+                                    </a>
+                                </li>
+                            @endif
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}">Login</a>
                             </li>
@@ -75,16 +84,18 @@
                                     </span>
                                 @endif
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="{{ route('cart.index') }}">
-                                    <i class="fas fa-shopping-cart me-2"></i> Giỏ Hàng
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center" href="{{ route('orders.index') }}">
-                                    Đơn Hàng Của Bạn
-                                </a>
-                            </li>
+                            @if (auth()->user()->role != 'admin')
+                                <li class="nav-item">
+                                    <a class="nav-link d-flex align-items-center" href="{{ route('cart.index') }}">
+                                        <i class="fas fa-shopping-cart me-2"></i> Giỏ Hàng
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link d-flex align-items-center" href="{{ route('orders.index') }}">
+                                        Đơn Hàng Của Bạn
+                                    </a>
+                                </li>
+                            @endif
                             <li class="nav-item">
                                 <form action="{{ route('logout') }}" method="POST" class="d-inline">
                                     @csrf
@@ -94,7 +105,6 @@
                         @endauth
                     </ul>
                 </div>
-
             </div>
         </nav>
         @yield('content')
