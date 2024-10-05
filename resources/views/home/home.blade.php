@@ -1,32 +1,47 @@
 @extends('layouts.app')
 
-@section('content')
-    <div class="container mt-4">
-        <h1 class="text-center mb-4">NEW ARRIVALS</h1>
 
-        <div class="row">
+@section('content')
+    @include('home.new-arrivals', ['newArrivals' => $newArrivals])
+    
+    <div class="container-fluid d-flex justify-content-center">
+        <div class="row mt-5">
             @foreach ($products as $product)
-                <div class="col-md-4 col-lg-3 mb-4">
-                    <div class="product-card">
-                        <img src="{{ asset('storage/' . $product->image_url) }}" class="product-card-img"
-                            alt="{{ $product->name }}">
-                        <div class="product-card-body">
-                            <h5 class="product-card-title">{{ $product->name }}</h5>
-                            <p class="product-card-stock">Còn lại: {{ $product->stock }}</p>
-                            <p class="product-card-description">{{ $product->category->name }}</p>
-                            <p class="product-card-price">
-                                {{ number_format($product->price, 0) }}đ
-                            </p>
-                            <div class="btn-group" role="group">
-                                <a href="{{ route('products.show', $product->product_id) }}" class="btn btn-link">Xem chi
-                                    tiết</a>
-                                <button type="button" class="btn btn-link add-to-cart"
+                <div class="col-sm-6 col-md-3 mb-4">
+                    <a href="{{ route('products.show', $product->product_id) }}" class="product-card h-100 d-block">
+                        <img src="{{ asset('storage/' . $product->image_url) }}" class="card-img" alt="{{ $product->name }}">
+                        <div class="card-body d-flex flex-column">
+                            <div class="mb-2">
+                                <h5 class="mb-0">{{ $product->name }}</h5>
+                            </div>
+                            <hr class="mt-2">
+                            <div class="d-flex justify-content-between pb-2">
+                                <div class="d-flex flex-column">
+                                    <span class="text-muted">Còn lại</span>
+                                    <h5 class="mb-0">{{ $product->stock }}</h5>
+                                </div>
+                                <div class="d-flex flex-column text-right">
+                                    <small class="text-muted">Danh mục</small>
+                                    <h6 class="mb-0">{{ $product->category->name }}</h6>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center p-3 mid flex-grow-1">
+                                <div class="d-flex flex-column">
+                                    <h3 class="mb-0 text-danger">{{ number_format($product->price, 0) }}đ</h3>
+                                </div>
+                                <div class="d-flex flex-column text-right">
+                                    <small class="text-muted mb-1">Đánh giá</small>
+                                    <h6 class="mb-0">{{ $product->rating ?? 'N/A' }}</h6>
+                                </div>
+                            </div>
+                            <div class="card__btn mx-3 mt-4 mb-2">
+                                <button type="button" class="btn btn-danger btn-block add-to-cart"
                                     data-product-id="{{ $product->product_id }}">
-                                    <i class="fas fa-shopping-cart"></i>
+                                    <small>THÊM VÀO GIỎ</small>
                                 </button>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             @endforeach
         </div>
@@ -37,7 +52,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('.add-to-cart').on('click', function() {
+            $('.add-to-cart').on('click', function(event) {
+                event.stopPropagation(); // Ngăn chặn sự kiện click tràn vào thẻ <a>
                 var productId = $(this).data('product-id');
                 var token = '{{ csrf_token() }}';
                 var isAuthenticated = {{ auth()->check() ? 'true' : 'false' }};
@@ -78,13 +94,11 @@
             });
             setTimeout(function() {
                 notification.fadeOut();
-            }, 5000);
+            }, 4000);
         }
     </script>
 
     <style>
-        .notification {
-            display: none;
-        }
+
     </style>
 @endsection

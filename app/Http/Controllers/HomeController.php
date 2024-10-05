@@ -12,8 +12,15 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $products = Product::all(); // Lấy tất cả sản phẩm
-        return view('home.home', compact('products')); // Truyền biến products sang view
+        $products = Product::orderBy('created_at', 'desc')->get();
+        $newArrivals = Product::orderBy('created_at', 'desc')->take(8)->get();
+        return view('home.home', compact('products', 'newArrivals')); // Truyền biến products sang view
+    }
+
+    public function index10prod()
+    {
+        $newArrivals = Product::orderBy('created_at', 'desc')->take(10)->get();
+        return view('home.new_arrivals', compact('newArrivals')); // Truyền biến sang view
     }
 
     /**

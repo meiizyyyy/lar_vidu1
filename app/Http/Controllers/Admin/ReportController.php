@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\Payment;
+use App\Models\User;
+use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
@@ -43,6 +46,24 @@ class ReportController extends Controller
             ->groupBy('year')
             ->get();
 
+        // Lấy doanh thu theo phương thức thanh toán
+        $revenueByPaymentMethod = Payment::select('payment_method', DB::raw('SUM(amount) as total_revenue'))
+            ->groupBy('payment_method')
+            ->get();
+
+
+        // Orders grouped by payment method
+        $ordersByPaymentMethod = Order::with('items') // Assuming an Order has items relation
+            ->get()
+            ->groupBy('payment_method')
+            ->map(function ($orders) {
+                return $orders->map(function ($order) {
+                    return [
+                        'id' => $order->id,
+                        'total' => $order->total,
+                    ];
+                });
+            });
         // Tính tổng doanh thu
         $totalRevenue = Order::sum('total');
 
@@ -54,7 +75,9 @@ class ReportController extends Controller
             'revenueByDate',
             'revenueByMonth',
             'revenueByYear',
-            'totalRevenue' // Thêm biến totalRevenue vào đây
+            'totalRevenue',
+            'revenueByPaymentMethod',
+            'ordersByPaymentMethod' // Thêm biến totalRevenue vào đây
         ));
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Cart;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -60,6 +61,11 @@ class OrderController extends Controller
             ]);
         }
 
+        Payment::create([
+            'order_id' => $order->id,
+            'amount' => $order->total,
+            'payment_method' => $order->payment_method,
+        ]);
         // Xóa giỏ hàng sau khi đặt hàng
         $cart->items()->delete();
         $cart->delete();
