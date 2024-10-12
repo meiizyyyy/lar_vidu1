@@ -29,18 +29,23 @@
                         </ul>
                     </div>
 
-                    <div class="description-container mb-4" style="max-height: 150px; overflow-y: auto;">
-                        <p class="lead">{{ $product->description }}</p>
-                    </div>
-
                     <form id="add-to-cart-form" data-product-id="{{ $product->product_id }}" class="mt-4">
                         @csrf
                         <button type="button" class="btn btn-primary add-to-cart">
                             <i class="fas fa-shopping-cart"></i> Thêm vào Giỏ Hàng
                         </button>
                     </form>
-                    <div id="message" style="display: none;"></div>
+                    <div id="message" style="display: none;" class="mt-3"></div>
+                </div>
+            </div>
 
+            <!-- Phần mô tả sản phẩm mới -->
+            <div class="row mt-5">
+                <div class="col-lg-12">
+                    <h4 class="fw-bolder mb-3">Mô tả sản phẩm:</h4>
+                    <div class="description-container" style="max-height: 300px; overflow-y: auto;">
+                        <p class="lead">{{ $product->description }}</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -74,6 +79,7 @@
             border: none;
         }
     </style>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function() {

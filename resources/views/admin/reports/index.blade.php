@@ -5,6 +5,8 @@
 @section('content')
     <div class="container">
         <h1 class="mb-4 text-center">Báo cáo Doanh Thu</h1>
+
+        <!-- Các báo cáo tổng quan -->
         <div class="row mb-4">
             <div class="col-md-4 mb-3">
                 <div class="report-box bg-primary text-white p-3 rounded shadow">
@@ -43,101 +45,27 @@
                 <div class="tab-content">
                     <div id="category" class="tab-pane fade show active">
                         <h3 class="mt-4">Doanh thu theo từng danh mục</h3>
-                        <div class="row">
-                            @foreach ($categoryRevenue as $revenue)
-                                <div class="col-md-4 mb-3">
-                                    <div class="card">
-                                        <div class="card-body text-center">
-                                            <h5 class="card-title">Danh mục: {{ $revenue->category_name }}</h5>
-                                            <p class="card-text">Tổng doanh thu:
-                                                {{ number_format($revenue->total_revenue, 0) }} VND</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
+                        <canvas id="categoryChart"></canvas>
                     </div>
 
                     <div id="date" class="tab-pane fade">
                         <h3 class="mt-4">Doanh thu theo ngày</h3>
-                        <table class="table table-striped mb-4">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th>Ngày</th>
-                                    <th>Tổng doanh thu</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($revenueByDate as $revenue)
-                                    <tr>
-                                        <td>{{ $revenue->date }}</td>
-                                        <td>{{ number_format($revenue->total_revenue, 0) }} VND</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                        <canvas id="dateChart"></canvas>
                     </div>
 
                     <div id="month" class="tab-pane fade">
                         <h3 class="mt-4">Doanh thu theo tháng</h3>
-                        <table class="table table-striped mb-4">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th>Tháng/Năm</th>
-                                    <th>Tổng doanh thu</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($revenueByMonth as $revenue)
-                                    <tr>
-                                        <td>{{ $revenue->month }}/{{ $revenue->year }}</td>
-                                        <td>{{ number_format($revenue->total_revenue, 0) }} VND</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                        <canvas id="monthChart"></canvas>
                     </div>
 
                     <div id="year" class="tab-pane fade">
                         <h3 class="mt-4">Doanh thu theo năm</h3>
-                        <table class="table table-striped mb-4">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th>Năm</th>
-                                    <th>Tổng doanh thu</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($revenueByYear as $revenue)
-                                    <tr>
-                                        <td>{{ $revenue->year }}</td>
-                                        <td>{{ number_format($revenue->total_revenue, 0) }} VND</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                        <canvas id="yearChart"></canvas>
                     </div>
 
                     <div id="payment" class="tab-pane fade">
                         <h3 class="mt-4">Doanh thu theo phương thức thanh toán</h3>
-                        <table class="table table-striped mb-4">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th>Phương thức Thanh toán</th>
-                                    <th>Tổng doanh thu</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($revenueByPaymentMethod as $revenue)
-                                    <tr class="payment-method" data-method="{{ $revenue->payment_method }}">
-                                        <td>{{ $revenue->payment_method }}</td>
-                                        <td>{{ number_format($revenue->total_revenue, 0) }} VND</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-
-                        <div id="order-details" class="mt-4"></div> <!-- Phần để hiển thị danh sách đơn hàng -->
+                        <canvas id="paymentChart" width="400" height="400"></canvas>
                     </div>
                 </div>
             </div>
@@ -145,20 +73,134 @@
     </div>
 
     <script>
-        document.querySelectorAll('.payment-method').forEach(row => {
-            row.addEventListener('click', function() {
-                const paymentMethod = this.dataset.method;
-                const orders = @json($ordersByPaymentMethod);
+        // Biểu đồ doanh thu theo danh mục
+        const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+        const categoryChart = new Chart(categoryCtx, {
+            type: 'bar',
+            data: {
+                labels: @json($categoryRevenue->pluck('category_name')),
+                datasets: [{
+                    label: 'Doanh thu',
+                    data: @json($categoryRevenue->pluck('total_revenue')),
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
 
-                let orderDetailsHtml = '<h5>Danh sách đơn hàng:</h5><ul>';
-                (orders[paymentMethod] || []).forEach(order => {
-                    orderDetailsHtml +=
-                        `<li>Đơn hàng ID: ${order.id} - Tổng: ${order.total} VND</li>`;
-                });
-                orderDetailsHtml += '</ul>';
+        // Biểu đồ doanh thu theo ngày
+        const dateCtx = document.getElementById('dateChart').getContext('2d');
+        const dateChart = new Chart(dateCtx, {
+            type: 'line',
+            data: {
+                labels: @json($revenueByDate->pluck('date')),
+                datasets: [{
+                    label: 'Doanh thu',
+                    data: @json($revenueByDate->pluck('total_revenue')),
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    fill: true
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
 
-                document.getElementById('order-details').innerHTML = orderDetailsHtml;
-            });
+        // Biểu đồ doanh thu theo tháng
+        const monthCtx = document.getElementById('monthChart').getContext('2d');
+        const monthChart = new Chart(monthCtx, {
+            type: 'bar',
+            data: {
+                labels: @json(
+                    $revenueByMonth->map(function ($item) {
+                        return $item->month . '/' . $item->year;
+                    })),
+                datasets: [{
+                    label: 'Doanh thu',
+                    data: @json($revenueByMonth->pluck('total_revenue')),
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Biểu đồ doanh thu theo năm
+        const yearCtx = document.getElementById('yearChart').getContext('2d');
+        const yearChart = new Chart(yearCtx, {
+            type: 'bar',
+            data: {
+                labels: @json($revenueByYear->pluck('year')),
+                datasets: [{
+                    label: 'Doanh thu',
+                    data: @json($revenueByYear->pluck('total_revenue')),
+                    backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                    borderColor: 'rgba(255, 206, 86, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Biểu đồ doanh thu theo phương thức thanh toán
+        const paymentCtx = document.getElementById('paymentChart').getContext('2d');
+        const paymentChart = new Chart(paymentCtx, {
+            type: 'pie',
+            data: {
+                labels: @json($revenueByPaymentMethod->pluck('payment_method')),
+                datasets: [{
+                    label: 'Doanh thu',
+                    data: @json($revenueByPaymentMethod->pluck('total_revenue')),
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                }
+            }
         });
     </script>
 @endsection

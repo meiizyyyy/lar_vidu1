@@ -19,7 +19,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::with('category')->get(); // Lấy danh sách sản phẩm
-        return view('home.home', compact('products')); // Truyền sản phẩm vào view home
+        return view('products.index', compact('products')); // Truyền sản phẩm vào view home
     }
 
     /**

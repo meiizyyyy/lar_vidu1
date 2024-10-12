@@ -27,14 +27,17 @@ Route::get('/', function () {
     // return view('welcome');
     return view('home.home');
 });
+
+// Route cho trang chính
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+
 Route::get('/', [ProductController::class, 'index']);
 // Admin routes
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-
     Route::get('/dashboard', function () {
         return view('admin.admindashboard');
     })->name('dashboard');
-
     // Category Routes
     Route::get('categories', [AdminController::class, 'indexCategories'])->name('categories.index');
     Route::get('categories/create', [AdminController::class, 'createCategory'])->name('categories.create');
@@ -62,7 +65,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('admin/orders/{id}', [AdminOrderController::class, 'show'])->name('admin.orders.show');
     Route::put('orders/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.updateStatus'); // Cập nhật trạng thái đơn hàng
 
-
     //Report
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 });
@@ -81,32 +83,19 @@ Route::middleware('auth')->group(function () {
     Route::post('/cart/add/{productId}', [CartController::class, 'add'])->name('cart.add'); // Thêm sản phẩm vào giỏ hàng
     Route::post('/cart/update/{itemId}', [CartController::class, 'update'])->name('cart.update'); // Cập nhật số lượng sản phẩm
     Route::delete('/cart/remove/{itemId}', [CartController::class, 'remove'])->name('cart.remove'); // Xóa sản phẩm khỏi giỏ hàng
-
-    // Đặt hàng (order)
+    // Đặt hàng
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index'); // Xem danh sách đơn hàng
     Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show'); // Xem chi tiết đơn hàng của khách hàng
-
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.store'); // Đặt hàng
 });
 Route::resource('orders', OrderController::class);
 
-// Route cho trang chính
-Route::get('/home', [HomeController::class, 'index'])->name('home');
-Route::get('/new-arrivals', [HomeController::class, 'index10prod'])->name('new.arrivals');
 
 
 
-// Hiển thị form đăng ký
+
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register.form');
-
-// Xử lý đăng ký người dùng
 Route::post('/register', [AuthController::class, 'register'])->name('register');
-
-// Hiển thị form đăng nhập
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-
-// Xử lý đăng nhập người dùng
 Route::post('/login', [AuthController::class, 'login'])->name('login');
-
-// Đăng xuất người dùng
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

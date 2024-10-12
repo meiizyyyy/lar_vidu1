@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}"> <!-- Liên kết đến file CSS tùy chỉnh -->
 
 </head>
@@ -112,7 +114,7 @@
         @yield('content')
     </div>
 
-    <div class="container mt-5">
+    <div class="container" style="margin-top: 1000px">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <h5>Đăng ký nhận thông tin mới nhất</h5>

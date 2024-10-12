@@ -7,8 +7,10 @@
                     <div class="row">
                         @foreach ($chunk as $product)
                             <div class="col-sm-6 col-md-3 mb-4">
-                                <a href="{{ route('products.show', $product->product_id) }}" class="product-card h-100 d-block">
-                                    <img src="{{ asset('storage/' . $product->image_url) }}" class="card-img" alt="{{ $product->name }}">
+                                <a href="{{ route('products.show', $product->product_id) }}"
+                                    class="product-card h-100 d-block">
+                                    <img src="{{ asset('storage/' . $product->image_url) }}" class="card-img"
+                                        alt="{{ $product->name }}">
                                     <div class="card-body d-flex flex-column">
                                         <div class="mb-2">
                                             <h5 class="mb-0">{{ $product->name }}</h5>
@@ -24,9 +26,11 @@
                                                 <h6 class="mb-0">{{ $product->category->name }}</h6>
                                             </div>
                                         </div>
-                                        <div class="d-flex justify-content-between align-items-center p-3 mid flex-grow-1">
+                                        <div
+                                            class="d-flex justify-content-between align-items-center p-3 mid flex-grow-1">
                                             <div class="d-flex flex-column">
-                                                <h3 class="mb-0 text-danger">{{ number_format($product->price, 0) }}đ</h3>
+                                                <h3 class="mb-0 text-danger">{{ number_format($product->price, 0) }}đ
+                                                </h3>
                                             </div>
                                             <div class="d-flex flex-column text-right">
                                                 <small class="text-muted mb-1">Đánh giá</small>
@@ -47,13 +51,35 @@
                 </div>
             @endforeach
         </div>
-        <a class="carousel-control-prev" href="#newArrivalsCarousel" role="button" data-slide="prev">
+        <a class="carousel-control-prev" href="#newArrivalsCarousel" role="button" data-slide="prev"
+            style="z-index: 1;">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="sr-only">Previous</span>
         </a>
-        <a class="carousel-control-next" href="#newArrivalsCarousel" role="button" data-slide="next">
+        <a class="carousel-control-next" href="#newArrivalsCarousel" role="button" data-slide="next"
+            style="z-index: 1;">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="sr-only">Next</span>
         </a>
     </div>
 </div>
+
+<style>
+    .carousel-control-prev,
+    .carousel-control-next {
+        width: 5%;
+        /* Giảm kích thước điều khiển */
+        background-color: rgba(255, 255, 255, 0.5);
+        /* Nền bán trong suốt cho điều khiển */
+        border-radius: 50%;
+        /* Bo tròn các nút điều khiển */
+    }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        background-color: #000;
+        /* Màu sắc của biểu tượng điều khiển */
+        border-radius: 50%;
+        /* Bo tròn biểu tượng */
+    }
+</style>

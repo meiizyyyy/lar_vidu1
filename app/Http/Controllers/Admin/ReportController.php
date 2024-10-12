@@ -18,7 +18,7 @@ class ReportController extends Controller
             ->select('products.category_id', 'categories.name as category_name', DB::raw('SUM(order_items.price * order_items.quantity) as total_revenue'))
             ->join('products', 'order_items.product_id', '=', 'products.product_id')
             ->join('orders', 'order_items.order_id', '=', 'orders.id')
-            ->join('categories', 'products.category_id', '=', 'categories.category_id') // Sửa lại từ categories.id thành categories.category_id
+            ->join('categories', 'products.category_id', '=', 'categories.category_id')
             ->where('orders.status', 'paid')
             ->groupBy('products.category_id', 'categories.name')
             ->get();
@@ -33,17 +33,20 @@ class ReportController extends Controller
         $revenueByDate = Order::select(DB::raw('DATE(created_at) as date, SUM(total) as total_revenue'))
             ->where('status', 'paid')
             ->groupBy('date')
+            ->orderBy('date')
             ->get();
 
         $revenueByMonth = Order::select(DB::raw('MONTH(created_at) as month, YEAR(created_at) as year, SUM(total) as total_revenue'))
             ->where('status', 'paid')
             ->groupBy('month', 'year')
+            ->orderBy(DB::raw('YEAR(created_at), MONTH(created_at)'))
             ->get();
 
 
         $revenueByYear = Order::select(DB::raw('YEAR(created_at) as year, SUM(total) as total_revenue'))
             ->where('status', 'paid')
             ->groupBy('year')
+            ->orderBy('year')
             ->get();
 
         // Lấy doanh thu theo phương thức thanh toán
@@ -52,8 +55,7 @@ class ReportController extends Controller
             ->get();
 
 
-        // Orders grouped by payment method
-        $ordersByPaymentMethod = Order::with('items') // Assuming an Order has items relation
+        $ordersByPaymentMethod = Order::with('items')
             ->get()
             ->groupBy('payment_method')
             ->map(function ($orders) {
@@ -77,7 +79,7 @@ class ReportController extends Controller
             'revenueByYear',
             'totalRevenue',
             'revenueByPaymentMethod',
-            'ordersByPaymentMethod' // Thêm biến totalRevenue vào đây
+            'ordersByPaymentMethod'
         ));
     }
 }
