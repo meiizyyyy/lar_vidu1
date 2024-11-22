@@ -2,7 +2,6 @@
 
 @section('content')
     @include('home.new-arrivals', ['newArrivals' => $newArrivals])
-
     <div class="container-fluid d-flex justify-content-center">
         <div class="row mt-5">
             <h1 class="mt-2 mb-2 justify-content-center d-flex">CÁC SẢN PHẨM NỔI BẬT</h1>
@@ -10,7 +9,8 @@
                 <div class="col-sm-6 col-md-3 mb-4">
                     <div class="product-card h-100 d-block">
                         <a href="{{ route('products.show', $product->product_id) }}">
-                            <img src="{{ asset('storage/' . $product->image_url) }}" class="card-img" alt="{{ $product->name }}">
+                            <img src="{{ asset('storage/' . $product->image_url) }}" class="card-img"
+                                alt="{{ $product->name }}">
                             <div class="card-body d-flex flex-column">
                                 <div class="mb-2">
                                     <h5 class="mb-0">{{ $product->name }}</h5>
@@ -72,7 +72,8 @@
                         _token: token,
                     },
                     success: function(response) {
-                        showNotification('Đã thêm ' + response.product_name + ' vào giỏ hàng thành công!');
+                        showNotification('Đã thêm ' + response.product_name +
+                            ' vào giỏ hàng thành công!');
                     },
                     error: function() {
                         showNotification('Có lỗi xảy ra. Vui lòng thử lại!');

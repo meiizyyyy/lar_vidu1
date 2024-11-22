@@ -12,14 +12,14 @@
                     <div class="card-body">
                         <h3 class="card-title">Đơn hàng #{{ $order->id }}</h3>
                         <p><strong>Trạng thái:</strong> {{ $order->status }}</p>
-                        <p><strong>Tổng tiền:</strong> {{ number_format($order->total, 2) }} VND</p>
+                        <p><strong>Tổng tiền:</strong> {{ number_format($order->total, 0) }} VND</p>
                         <p><strong>Phương thức thanh toán:</strong> {{ $order->payment_method }}</p>
                         <p><strong>Tên:</strong> {{ $order->name }}</p>
                         <p><strong>Số điện thoại:</strong> {{ $order->phone }}</p>
                         <p><strong>Email:</strong> {{ $order->email }}</p>
                         <p><strong>Địa chỉ:</strong> {{ $order->address }}</p>
                         <p><strong>Ghi chú:</strong> {{ $order->notes }}</p>
-
+                        
                         @if ($order->status === 'processing')
                             <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-warning">Sửa thông tin</a>
 
@@ -30,7 +30,7 @@
                             </form>
                         @endif
                         <p>
-                            <a href="{{ route('orders.show', $order->id) }}" class="btn btn-primary">Xem chi tiết</a>
+                            <a href="{{ route('orders.show', $order->id) }}" class="btn btn-primary mt-2">Xem chi tiết</a>
                         </p>
                     </div>
                 </div>

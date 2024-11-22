@@ -30,9 +30,8 @@ Route::get('/', function () {
 
 // Route cho trang chính
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::get('/', [ProductController::class, 'index']);
+
 // Admin routes
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', function () {

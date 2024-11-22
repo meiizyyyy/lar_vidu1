@@ -50,15 +50,15 @@
                                 <a href="{{ route('admin.orders.show', $order->id) }}" class="btn btn-info btn-sm">Xem chi
                                     tiết</a>
 
-                                <a href="{{ route('admin.orders.edit', $order->id) }}"
-                                    class="btn btn-warning btn-sm">Sửa</a>
-                                <form action="{{ route('admin.orders.destroy', $order->id) }}" method="POST"
+                                {{-- <a href="{{ route('admin.orders.edit', $order->id) }}"
+                                    class="btn btn-warning btn-sm">Sửa</a> --}}
+                                {{-- <form action="{{ route('admin.orders.destroy', $order->id) }}" method="POST"
                                     style="display: inline;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm"
                                         onclick="return confirm('Bạn có chắc chắn muốn xóa đơn hàng này?')">Xóa</button>
-                                </form>
+                                </form> --}}
                             </td>
                         </tr>
                     @endforeach

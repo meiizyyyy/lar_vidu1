@@ -4,12 +4,12 @@
     <div class="container mt-5">
         <div class="row">
             <div class="col-lg-8">
-                <div class="cart__list mt-5">
+                <div class="cart__list mt-3">
                     @if ($cart && $cart->items->isNotEmpty())
                         <h2 class="cart-title">Giỏ hàng của bạn <b><span
                                     class="cart-total text-danger">{{ $cart->items->count() }} Sản
                                     Phẩm</span> </b></h2>
-                        <table class="table">
+                        <table class="table mt-3">
                             <thead>
                                 <tr>
                                     <th>Tên Sản phẩm</th>
@@ -86,15 +86,17 @@
                         @csrf
                         <div class="form-group">
                             <label for="name">Họ tên:</label>
-                            <input type="text" name="name" id="name" class="form-control" required>
+                            <input type="text" name="name" id="name" class="form-control"
+                                value="{{ auth()->user()->first_name }} {{ auth()->user()->last_name }}" required>
                         </div>
                         <div class="form-group">
                             <label for="phone">Số điện thoại:</label>
                             <input type="text" name="phone" id="phone" class="form-control" required>
                         </div>
                         <div class="form-group">
-                            <label for="email">Email (không bắt buộc):</label>
-                            <input type="email" name="email" id="email" class="form-control">
+                            <label for="email">Email:</label>
+                            <input type="email" name="email" id="email" class="form-control" required
+                                value="{{ auth()->user()->email }}">
                         </div>
                         <div class="form-group">
                             <label for="address">Địa chỉ giao hàng:</label>

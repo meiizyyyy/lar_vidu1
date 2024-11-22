@@ -13,7 +13,7 @@ class AuthController extends Controller
     //
     public function showRegisterForm()
     {
-        return view('auth.register');  // Trả về form đăng ký
+        return view('auth.register'); 
     }
 
     public function register(Request $request)
@@ -44,30 +44,34 @@ class AuthController extends Controller
         // Đăng nhập sau khi đăng ký
         auth()->attempt($request->only('email', 'password'));
 
-        return redirect()->route('home');  // Điều hướng về trang chủ sau khi đăng ký
+        return redirect()->route('home');
     }
 
     public function showLoginForm()
     {
-        return view('auth.login');  // Trả về form đăng nhập
+        return view('auth.login');
     }
 
     public function login(Request $request)
     {
         // Validate thông tin đăng nhập
         $credentials = $request->validate([
-            'username' => 'required',  // Sử dụng username hoặc email
+            'username' => 'required',
             'password' => 'required',
         ]);
 
         // Kiểm tra nếu username là email hay username
         $login_type = filter_var($request->username, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
 
-        // Thử đăng nhập với username hoặc email
         if (auth()->attempt([$login_type => $request->username, 'password' => $request->password])) {
             // Đăng nhập thành công
-            return redirect()->intended('/home');
+            if (auth()->user()->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            }
+
+            return redirect()->intended('/');
         }
+
 
         // Đăng nhập thất bại
         return back()->withErrors([
@@ -79,6 +83,6 @@ class AuthController extends Controller
     public function logout()
     {
         auth()->logout();
-        return redirect()->route('home');  // Điều hướng về trang đăng nhập sau khi đăng xuất
+        return redirect()->route('home');
     }
 }

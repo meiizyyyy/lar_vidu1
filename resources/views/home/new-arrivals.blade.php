@@ -1,4 +1,4 @@
-<h2 class="mt-5 mb-2 justify-content-center d-flex">Sản Phẩm Mới Nhất</h2>
+<h2 class="mt-5 mb-2 justify-content-center d-flex">SẢN PHẨM MỚI NHẤT</h2>
 <div class="container-fluid">
     <div id="newArrivalsCarousel" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">

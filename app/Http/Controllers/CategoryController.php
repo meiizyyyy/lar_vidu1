@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Models\Product;
 
 class CategoryController extends Controller
 {
@@ -45,8 +46,13 @@ class CategoryController extends Controller
     public function show(string $id)
     {
         $category = Category::findOrFail($id);
-        return view('categories.show', compact('category'));
+        $products = Product::where('category_id', $id)->get(); // Lấy sản phẩm thuộc danh mục
+
+        return view('categories.show', compact('category', 'products'));
     }
+
+
+
 
     /**
      * Show the form for editing the specified resource.
